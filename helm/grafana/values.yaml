@@ -1,0 +1,43 @@
+replicaCount: 1
+
+image:
+  repository: grafana/grafana
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: 'latest'
+  env: 
+    - name: GF_AUTH_JWT_ENABLED
+      value: "true"   
+    - name: GF_AUTH_JWT_HEADER_NAME
+      value: "x-amzn-oidc-accesstoken"
+    - name: GF_AUTH_JWT_USERNAME_CLAIM
+      value: "username"
+    - name: GF_AUTH_JWT_EMAIL_CLAIM
+      value: "email"
+    - name: GF_AUTH_JWT_JWK_SET_URL
+      value: "https://cognito-idp.eu-west-3.amazonaws.com/{COGNITO_USER_POOL_ID}/.well-known/jwks.json"
+    - name: GT_AUTH_JWT_CACHE_TTL
+      value: "60m" 
+    - name: GF_AUTH_JWT_EXPECT_CLAIMS
+      value: '{"iss": "https://cognito-idp.eu-west-3.amazonaws.com/{COGNITO_USER_POOL_ID}"}'
+    - name: GF_AUTH_SIGNOUT_REDIRECT_URL
+      value: "https://{COGNITO_DOMAIN}/logout?client_id={COGNITO_CLIENT_ID}&logout_uri=https://grafana.{YOUR_DOMAIN_NAME}/login"
+
+nameOverride: ''
+fullnameOverride: 'grafana'
+
+service:
+  type: ClusterIP
+  port: 3000
+
+ingress:
+  enabled: true
+  className: 'nginx'
+  annotations:
+    {}
+  hosts:
+    - host: 'grafana.{YOUR_DOMAIN_NAME}'
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
