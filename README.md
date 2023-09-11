@@ -4,6 +4,8 @@ This GitHub repository contains code for deploying a proof of concept of applica
 
 The code deploys three applications. The first two applications are HTTP-HTTPS echo apps, with one of them protected by AWS Cognito for secure authentication, while the other is publicly accessible. The third app is an instance of Grafana, which is protected by AWS Cognito. We tried to configure AWS Cognito with it to achieve a one-step authentication.
 
+Read this article for more information: https://security.padok.fr/en/blog/appliacation-load-balancer
+
 # Usage
 
 ## Prerequisites
